@@ -4,15 +4,15 @@ public class Item {
 	
 	private long id;
 	private String productName;
-	private float price;
+	private double price;
 
-	public Item(String productName, float price) {
+	public Item(String productName, double price) {
 		super();
 		this.productName = productName;
 		this.price = price;
 	}
 
-	public Item(long id, String productName, float price) {
+	public Item(long id, String productName, double price) {
 		super();
 		this.id = id;
 		this.productName = productName;
@@ -35,7 +35,7 @@ public class Item {
 		this.productName = productName;
 	}
 
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
@@ -53,7 +53,9 @@ public class Item {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + Float.floatToIntBits(price);
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((productName == null) ? 0 : productName.hashCode());
 		return result;
 	}
@@ -69,7 +71,7 @@ public class Item {
 		Item other = (Item) obj;
 		if (id != other.id)
 			return false;
-		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
+		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
 			return false;
 		if (productName == null) {
 			if (other.productName != null)
@@ -78,5 +80,6 @@ public class Item {
 			return false;
 		return true;
 	}
+
 
 }
