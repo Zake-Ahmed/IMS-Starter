@@ -1,4 +1,5 @@
 package com.qa.ims.persistence.dao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,21 +14,19 @@ import org.apache.logging.log4j.Logger;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
 
-
-public class ItemDAO implements Dao<Item>{
+public class ItemDAO implements Dao<Item> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
-	
+
 	@Override
 	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("product_id");
 		String productName = resultSet.getString("product_name");
 		double price = resultSet.getFloat("price");
 		return new Item(id, productName, price);
-		
+
 	}
-	
-	
+
 	@Override
 	public List<Item> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
@@ -44,11 +43,11 @@ public class ItemDAO implements Dao<Item>{
 		}
 		return new ArrayList<>();
 	}
-	
+
 	public Item readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM items ORDER BY id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -57,8 +56,6 @@ public class ItemDAO implements Dao<Item>{
 		}
 		return null;
 	}
-
-
 
 	@Override
 	public Item create(Item item) {
@@ -75,7 +72,7 @@ public class ItemDAO implements Dao<Item>{
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Item read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
@@ -91,7 +88,6 @@ public class ItemDAO implements Dao<Item>{
 		}
 		return null;
 
-		
 	}
 
 	@Override
@@ -109,7 +105,7 @@ public class ItemDAO implements Dao<Item>{
 			LOGGER.error(e.getMessage());
 		}
 		return null;
-		
+
 	}
 
 	@Override
@@ -124,10 +120,5 @@ public class ItemDAO implements Dao<Item>{
 		}
 		return 0;
 	}
-
-
-
-	
-	
 
 }

@@ -9,7 +9,7 @@ import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.Utils;
 
-public class ItemController implements CrudController<Item>{
+public class ItemController implements CrudController<Item> {
 	
 	public static final Logger LOGGER = LogManager.getLogger();
 
