@@ -23,6 +23,7 @@ public class ItemDAO implements Dao<Item> {
 		Long id = resultSet.getLong("product_id");
 		String productName = resultSet.getString("product_name");
 		double price = resultSet.getFloat("price");
+		
 		return new Item(id, productName, price);
 
 	}
