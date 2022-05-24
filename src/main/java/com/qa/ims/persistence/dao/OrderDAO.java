@@ -170,6 +170,40 @@ public class OrderDAO implements Dao<Order> {
 	
 	}
 	
+	public Order addProduct(long order_id , long product_id) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement("INSERT INTO joining(product_id, order_id) VALUES (?, ?)");) {
+			statement.setLong(1, product_id);
+			statement.setLong(2, order_id);
+			statement.executeUpdate();
+			return read(order_id);
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+		
+	}
+	
+	public Order delProduct(long order_id , long product_id) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement("delete from joining where product_id = ? AND order_id = ?");) {
+			statement.setLong(1, product_id);
+			statement.setLong(2, order_id);
+			statement.executeUpdate();
+			return read(order_id);
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+		
+	}
+	
+	
+	
 	
 
 
