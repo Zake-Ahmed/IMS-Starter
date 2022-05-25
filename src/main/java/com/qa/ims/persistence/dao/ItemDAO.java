@@ -23,7 +23,7 @@ public class ItemDAO implements Dao<Item> {
 		Long id = resultSet.getLong("product_id");
 		String productName = resultSet.getString("product_name");
 		double price = resultSet.getFloat("price");
-		
+		price = Math.round(price*100.00)/100.00;
 		return new Item(id, productName, price);
 
 	}
@@ -68,7 +68,7 @@ public class ItemDAO implements Dao<Item> {
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
-			LOGGER.debug(e);
+			LOGGER.debug(e); 
 			LOGGER.error(e.getMessage());
 		}
 		return null;

@@ -37,10 +37,9 @@ public class OrderController  implements CrudController<Order>{
 	public Order create() {
 		LOGGER.info("Please enter the customer ID ");
 		Long customerID = utils.getLong();
-		Order newOrder = orderDAO.create(new Order(customerID)); 
-//		Order newOrder = new Order(customerID);
-//		System.out.println(newOrder);
-//		LOGGER.info("Order initialised");
+		Order newOrder = orderDAO.create(new Order(customerID));
+		System.out.println(newOrder);
+		LOGGER.info("Order initialised");
 //		LOGGER.info("Please enter the ID of the inital product you'd like to add");
 //		Long productID = utils.getLong();
 //		Order addedOrder = orderDAO.addProduct(newOrder.getId(), productID);
@@ -50,10 +49,14 @@ public class OrderController  implements CrudController<Order>{
 	@Override
 	public Order update() {
 		LOGGER.info("Please enter the id of the order you would like to update");
-		LOGGER.info()
+		Long orderID = utils.getLong();
+		LOGGER.info("Please enter id of the product you would like to add");
+		Long itemID = utils.getLong();
+		Order addedOrder = orderDAO.addProduct(orderID, itemID);
+		LOGGER.info("product added to order. THANK YOU!");
 		
 		
-		return null;
+		return addedOrder;
 	}
 	@Override
 	public int delete() {

@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +42,11 @@ public class OrderDAO implements Dao<Order> {
 //		}
 //		return null;
 //}
+	public OrderDAO(ItemDAO itemDAO) {
+	super();
+	this.itemDAO = itemDAO;
+}
+
 	public List<Item> readItems(Long order_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.
@@ -62,18 +69,41 @@ public class OrderDAO implements Dao<Order> {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
-		return new ArrayList<>();
+		return null;
 			
 }		
 	
+
 	@Override
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id= resultSet.getLong("Order_id");
 		Long customerID = resultSet.getLong("customer_id");
 		List<Item> products =readItems(id);
+		List<Double> prices = new ArrayList<>();
+		Double cost = 0D;
+		if(products.size()>=1) {
 		
-		return new Order(id , customerID , products);
+		for (int i=0 ; i<products.size() ; i++) {
+			prices.add(products.get(i).getPrice());
+			
+		}
+        Double cost1= prices.stream().reduce((a,b) -> a+b).get();
+        
+        cost1=Math.round(cost1*100.00)/100.00;
+        try(Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement("UPDATE orders SET cost = ? WHERE  order_id= ?");) {
+			statement.setDouble(1, cost1);
+			statement.setLong(2, id);
+			statement.executeUpdate();}
+       
+        
+        return  new Order(id , customerID , products, cost1);
+		}else {
+	
+		return new Order(id , customerID , products, cost);
 	}
+}
 	
 	@Override
 	public List<Order> readAll() {
@@ -92,7 +122,7 @@ public class OrderDAO implements Dao<Order> {
 		return new ArrayList<>();
 	}
 
-	
+
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
