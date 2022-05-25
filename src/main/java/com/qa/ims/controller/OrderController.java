@@ -38,29 +38,45 @@ public class OrderController  implements CrudController<Order>{
 		LOGGER.info("Please enter the customer ID ");
 		Long customerID = utils.getLong();
 		Order newOrder = orderDAO.create(new Order(customerID));
-		System.out.println(newOrder);
 		LOGGER.info("Order initialised");
-//		LOGGER.info("Please enter the ID of the inital product you'd like to add");
-//		Long productID = utils.getLong();
-//		Order addedOrder = orderDAO.addProduct(newOrder.getId(), productID);
-//		LOGGER.info("Product added to Order");
-		return newOrder;
+		LOGGER.info("Please enter the ID of the inital product you'd like to add");
+		Long productID = utils.getLong();
+		Order addedOrder = orderDAO.addProduct(newOrder.getId(), productID);
+		System.out.println(addedOrder);
+		LOGGER.info("Product added to Order");
+		return addedOrder;
 	}
 	@Override
 	public Order update() {
 		LOGGER.info("Please enter the id of the order you would like to update");
 		Long orderID = utils.getLong();
-		LOGGER.info("Please enter id of the product you would like to add");
-		Long itemID = utils.getLong();
-		Order addedOrder = orderDAO.addProduct(orderID, itemID);
-		LOGGER.info("product added to order. THANK YOU!");
+		LOGGER.info("Would you like to add or delete a product from this order");
+		String act = utils.getString();
+		if (act.toLowerCase().equals("add")) {
+			LOGGER.info("Please enter id of the product you would like to add");
+			Long itemID = utils.getLong();
+			Order addedOrder = orderDAO.addProduct(orderID, itemID);
+			LOGGER.info("product added to the order. THANK YOU!");
+			System.out.println(addedOrder);
+			return addedOrder;
+		}else if (act.toLowerCase().equals("delete")) {
+			LOGGER.info("Please enter id of the product you would like to delete");
+			Long itemID = utils.getLong();
+			Order delOrder = orderDAO.delProduct(orderID, itemID);
+			LOGGER.info("product deleted from the order. THANK YOU!");
+			System.out.println(delOrder);
+			return delOrder;
+		}else {
+			LOGGER.info("Sorry invalid input please write add or delete. THANK YOU!!!");
+			return null;
+		}
 		
 		
-		return addedOrder;
+		
 	}
 	@Override
 	public int delete() {
-		LOGGER.info("Please enter the id of the item you would like to delete");
+		LOGGER.info("Please enter the id of the order you would like to delete");
 		Long id = utils.getLong();
 		return orderDAO.delete(id);
 

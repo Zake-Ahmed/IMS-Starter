@@ -1,6 +1,6 @@
 package com.qa.ims.persistence.domain;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class Order {
@@ -14,12 +14,7 @@ public class Order {
 		super();
 		this.customerID = customerID;
 		this.product = product;
-//		List<Double> prices = new ArrayList<>();
-//		for (int i=0 ; i<product.size() ; i++) {
-//			prices.add(product.get(i).getPrice());
-//			
-//		}
-//        this.cost= prices.stream().reduce((a,b) -> a+b).get();
+
 	
 	}
 	public Order(long id, long customerID) {
@@ -43,12 +38,7 @@ public class Order {
 		this.id = id;
 		this.customerID = customerID;
 		this.product = product;
-//		List<Double> prices = new ArrayList<>();
-//		for (int i=0 ; i<product.size() ; i++) {
-//			prices.add(product.get(i).getPrice());
-//			
-//		}
-//        this.cost= prices.stream().reduce((a,b) -> a+b).get();
+
 	}
 	@Override
 	public String toString() {
