@@ -40,12 +40,79 @@ public class OrderControllerTest {
 		Mockito.when(utils.getLong()).thenReturn(id);
 
 		Mockito.when(dao.create(created)).thenReturn(created);
+		Mockito.when(dao.addProduct(0,1)).thenReturn(created);
 
 		assertEquals(created, controller.create());
 
+
+	}
+	@Test
+	public void testReadAll() {
+		List<Order> orders = new ArrayList<>();
+		orders.add(new Order(1, 1));
+		Mockito.when(dao.readAll()).thenReturn(orders);
+
+		assertEquals(orders, controller.readAll());
+
+		Mockito.verify(dao, Mockito.times(1)).readAll();
+		
+	}
+	@Test
+	public void testDelete() {
+		final long ID = 1L;
+
+		Mockito.when(utils.getLong()).thenReturn(ID);
+		Mockito.when(dao.delete(ID)).thenReturn(1);
+
+		assertEquals(1L, this.controller.delete());
+
 		Mockito.verify(utils, Mockito.times(1)).getLong();
-		Mockito.verify(dao, Mockito.times(1)).create(created);
+		Mockito.verify(dao, Mockito.times(1)).delete(ID);
 	}
 	
+	@Test
+	public void testUpdateADD() {
+		Order updated = new Order(1L, 1);
+
+		Mockito.when(this.utils.getLong()).thenReturn(1L);
+		Mockito.when(this.utils.getString()).thenReturn("add");
+		Mockito.when(this.dao.addProduct(1, 1)).thenReturn(updated);
+		//Mockito.when(this.dao.update(updated)).thenReturn(updated);
+		assertEquals(updated, this.controller.update());
+
+		Mockito.verify(this.utils, Mockito.times(2)).getLong();
+	
+
+	
+	}
+	@Test
+	public void testUpdateDEL() {
+		Order updated = new Order(1L, 1);
+
+		Mockito.when(this.utils.getLong()).thenReturn(1L);
+		Mockito.when(this.utils.getString()).thenReturn("delete");
+		Mockito.when(this.dao.delProduct(1, 1)).thenReturn(updated);
+		//Mockito.when(this.dao.update(updated)).thenReturn(updated);
+		assertEquals(updated, this.controller.update());
+
+		Mockito.verify(this.utils, Mockito.times(2)).getLong();
+	
+
+	
+	}
+	@Test
+	public void testUpdateInvalid() {
+
+		Mockito.when(this.utils.getLong()).thenReturn(1L);
+		Mockito.when(this.utils.getString()).thenReturn("2232");
+		//Mockito.when(this.dao.update(updated)).thenReturn(updated);
+		assertEquals(null, this.controller.update());
+
+	
+	
+
+		}
+
+
 
 }

@@ -1,4 +1,8 @@
-Use testIMS;
+drop schema testims;
+
+CREATE SCHEMA IF NOT EXISTS `testims`;
+
+Use `testIMS`;
 
 DROP TABLE IF EXISTS `customers`;
 
@@ -14,21 +18,22 @@ DROP TABLE IF EXISTS `items`;
 CREATE TABLE IF NOT EXISTS `items` (
     `product_id` int(11) NOT NULL AUTO_INCREMENT,
     `product_name` varchar(10) DEFAULT NULL,
-    `price` double DEFAULT NULL,
+    `price` decimal(10,2) DEFAULT NULL,
     primary key (`product_id`)
 );
 
-Drop table if EXISTS `orders`
+Drop table if EXISTS `orders`;
 
 create table if not exists `orders` (
-`order_id` int NOT NULL auto_increment,
-`customer_id` int ,
-`cost` double,
+`order_id` int(10) NOT NULL AUTO_INCREMENT,
+`customer_id` int(10) ,
+`cost` decimal(10,2),
 primary key(`order_id`),
-foreign key (`ustomer_id`) REFERENCES `customers`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+foreign key (`customer_id`) REFERENCES `customers`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-Drop table if not exists `joining`
+Drop table if exists `joining`;
+
 create table if not exists `joining` (
 `order_id` int NOT NULL ,
 `product_id` int,
