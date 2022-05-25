@@ -43,7 +43,7 @@ public class OrderDAO implements Dao<Order> {
 	public List<Item> readItems(Long order_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.
-						prepareStatement("SELECT product_id FROM joining WHERE order_id = " + order_id);){
+						prepareStatement("SELECT product_id FROM joining WHERE order_id = ?");){
 			statement.setLong(1, order_id);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				List<Long> itemsID = new ArrayList<>();
@@ -72,7 +72,7 @@ public class OrderDAO implements Dao<Order> {
 		Long customerID = resultSet.getLong("customer_id");
 		List<Item> products =readItems(id);
 		
-		return new Order(id , customerID, products);
+		return new Order(id , customerID , products);
 	}
 	
 	@Override
@@ -173,9 +173,9 @@ public class OrderDAO implements Dao<Order> {
 	public Order addProduct(long order_id , long product_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("INSERT INTO joining(product_id, order_id) VALUES (?, ?)");) {
-			statement.setLong(1, product_id);
-			statement.setLong(2, order_id);
+						.prepareStatement("INSERT INTO joining(order_id, product_id) VALUES (?, ?)");) {
+			statement.setLong(1, order_id);
+			statement.setLong(2, product_id);
 			statement.executeUpdate();
 			return read(order_id);
 		} catch (Exception e) {
