@@ -50,12 +50,12 @@ public class ItemControllerTest {
 	
 	@Test
 	public void testReadAll() {
-		List<Item> customers = new ArrayList<>();
-		customers.add(new Item(1L, "watch", 10.50));
+		List<Item> items = new ArrayList<>();
+		items.add(new Item(1L, "watch", 10.50));
 
-		Mockito.when(dao.readAll()).thenReturn(customers);
+		Mockito.when(dao.readAll()).thenReturn(items);
 
-		assertEquals(customers, controller.readAll());
+		assertEquals(items, controller.readAll());
 
 		Mockito.verify(dao, Mockito.times(1)).readAll();
 	}
